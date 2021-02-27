@@ -106,5 +106,4 @@ The Red Team was able to penetrate `Target 1` and retrieve the following confide
       - Step 5: Privilege Escalation with Python Shell Spawn
         - ` sudo python -c 'import pty;pty.spawn("/bin/bash")' `
         ![Privilege-Escalation](/Target-1-Screenshots/Privilege-Escalation.png)
-      -  Flag 4:
         ![Flag-4](/Target-1-Screenshots/Flag-4.png)
